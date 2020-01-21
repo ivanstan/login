@@ -1,5 +1,8 @@
 <?php
 
+/** @noinspection PhpIncludeInspection */
+/** @noinspection PhpUnhandledExceptionInspection */
+
 use App\Command\DoctrineReloadCommand;
 use App\Kernel;
 use Symfony\Bundle\FrameworkBundle\Console\Application;

@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpUnhandledExceptionInspection */
 
 use App\Kernel;
 use Symfony\Component\ErrorHandler\Debug;

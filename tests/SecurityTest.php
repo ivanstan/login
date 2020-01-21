@@ -13,7 +13,7 @@ class SecurityTest extends AbstractWebTestCase
             'password' => 'noop'
         ]);
 
-        $this->assertEquals(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+        self::assertEquals(Response::HTTP_FORBIDDEN, $response->getStatusCode());
     }
 
     public function testInvalidPasswordLogin(): void

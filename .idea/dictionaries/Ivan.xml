@@ -1,8 +1,17 @@
 <component name="ProjectDictionaryState">
   <dictionary name="Ivan">
     <words>
+      <w>autoloaded</w>
+      <w>bcrypt</w>
+      <w>ctype</w>
       <w>dotenv</w>
       <w>exts</w>
+      <w>iconv</w>
+      <w>myclabs</w>
+      <w>paragonie</w>
+      <w>phpdbg</w>
+      <w>roave</w>
+      <w>sensio</w>
     </words>
   </dictionary>
 </component>
