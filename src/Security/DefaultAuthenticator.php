@@ -15,9 +15,11 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticator;
 use Symfony\Component\Security\Guard\PasswordAuthenticatedInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class DefaultAuthenticator extends AbstractFormLoginAuthenticator implements PasswordAuthenticatedInterface
 {
+    private SerializerInterface $serializer;
     private EntityManagerInterface $entityManager;
     private UrlGeneratorInterface $urlGenerator;
     private UserPasswordEncoderInterface $passwordEncoder;
@@ -25,11 +27,13 @@ class DefaultAuthenticator extends AbstractFormLoginAuthenticator implements Pas
     public function __construct(
         EntityManagerInterface $entityManager,
         UrlGeneratorInterface $urlGenerator,
-        UserPasswordEncoderInterface $passwordEncoder
+        UserPasswordEncoderInterface $passwordEncoder,
+        SerializerInterface $serializer
     ) {
         $this->entityManager = $entityManager;
         $this->urlGenerator = $urlGenerator;
         $this->passwordEncoder = $passwordEncoder;
+        $this->serializer = $serializer;
     }
 
     public function supports(Request $request): bool
@@ -41,7 +45,7 @@ class DefaultAuthenticator extends AbstractFormLoginAuthenticator implements Pas
     {
         $credentials = [
             'email' => $request->request->get('email'),
-            'password' => $request->request->get('password')
+            'password' => $request->request->get('password'),
         ];
         $request->getSession()->set(
             Security::LAST_USERNAME,
@@ -86,7 +90,9 @@ class DefaultAuthenticator extends AbstractFormLoginAuthenticator implements Pas
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
-        return new JsonResponse(['success' => true]);
+        return JsonResponse::fromJsonString(
+            $this->serializer->serialize($token->getUser(), 'json', ['groups' => 'user'])
+        );
     }
 
     protected function getLoginUrl(): string
