@@ -28,6 +28,17 @@ class AdministratorTest extends AbstractWebTestCase
         $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
     }
 
+    /**
+     * @depends testAdminUserLogin
+     */
+    public function testUser(array $cookies): void
+    {
+        $this->setCookies($cookies);
+
+        $response = $this->get('/user/2');
+        $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
+    }
+
     private function setCookies(array $cookies): void
     {
         foreach ($cookies as $cookie) {
