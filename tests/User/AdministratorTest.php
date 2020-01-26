@@ -10,13 +10,7 @@ class AdministratorTest extends AbstractWebTestCase
 {
     public function testAdminUserLogin(): array
     {
-        $response = $this->post(
-            '/login',
-            [
-                'email' => 'admin@example.com',
-                'password' => 'test123',
-            ]
-        );
+        $response = $this->post('/login', ['email' => 'admin@example.com', 'password' => 'test123']);
 
         $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
 
@@ -40,5 +34,4 @@ class AdministratorTest extends AbstractWebTestCase
             self::$client->getCookieJar()->set(new Cookie($cookie->getName(), $cookie->getValue()));
         }
     }
-
 }
