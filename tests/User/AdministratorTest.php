@@ -38,11 +38,4 @@ class AdministratorTest extends AbstractWebTestCase
         $response = $this->get('/user/2');
         $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
     }
-
-    private function setCookies(array $cookies): void
-    {
-        foreach ($cookies as $cookie) {
-            self::$client->getCookieJar()->set(new Cookie($cookie->getName(), $cookie->getValue()));
-        }
-    }
 }

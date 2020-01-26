@@ -4,6 +4,7 @@ namespace App\Tests;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\BrowserKit\AbstractBrowser;
+use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\HttpFoundation\Response;
 
 class AbstractWebTestCase extends WebTestCase
@@ -33,6 +34,13 @@ class AbstractWebTestCase extends WebTestCase
     protected function toArray(Response $response): array
     {
         return json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
+    }
+
+    protected function setCookies(array $cookies): void
+    {
+        foreach ($cookies as $cookie) {
+            self::$client->getCookieJar()->set(new Cookie($cookie->getName(), $cookie->getValue()));
+        }
     }
 
     private function buildUrl(string $url, array $params = []): string
