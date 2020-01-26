@@ -3,6 +3,7 @@
 namespace App\Controller\Security;
 
 use App\Entity\User;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -27,6 +28,7 @@ class UserController extends AbstractController
 
     /**
      * @Route("/user/{user<\d+>}", name="user")
+     * @IsGranted("ROLE_ADMIN")
      */
     public function user(User $user, SerializerInterface $serializer): JsonResponse
     {

@@ -22,7 +22,7 @@ class UserTest extends AbstractWebTestCase
     public function testAnonymousUserMe(array $cookies): void
     {
         $this->setCookies($cookies);
-        $response = $this->get('/me');
+        $response = $this->get('/user/1');
 
         $this->assertEquals(Response::HTTP_FORBIDDEN, $response->getStatusCode());
     }
