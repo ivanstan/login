@@ -3,7 +3,6 @@
 namespace App\Tests\User;
 
 use App\Tests\AbstractWebTestCase;
-use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\HttpFoundation\Response;
 
 class AdministratorTest extends AbstractWebTestCase
@@ -23,8 +22,8 @@ class AdministratorTest extends AbstractWebTestCase
     public function testMe(array $cookies): void
     {
         $this->setCookies($cookies);
-
         $response = $this->get('/me');
+
         $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
     }
 
@@ -34,8 +33,8 @@ class AdministratorTest extends AbstractWebTestCase
     public function testUser(array $cookies): void
     {
         $this->setCookies($cookies);
-
         $response = $this->get('/user/2');
+
         $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
     }
 }
