@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpMissingFieldTypeInspection */
 
 namespace App\Entity;
 
@@ -37,7 +37,7 @@ class User implements UserInterface
      */
     private ?string $password;
 
-    private ?string $plainPassword;
+    private $plainPassword;
 
     /**
      * @ORM\Column(type="json")
