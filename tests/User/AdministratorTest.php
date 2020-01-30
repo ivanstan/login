@@ -13,16 +13,18 @@ class AdministratorTest extends AbstractWebTestCase
 
         $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
 
-        return $response->headers->getCookies();
+        return [
+            'cookies' => $response->headers->getCookies(),
+        ];
     }
 
     /**
      * @depends testAdminUserLogin
      */
-    public function testMe(array $cookies): void
+    public function testMe(array $data): void
     {
-        $this->setCookies($cookies);
-        $response = $this->get('/me');
+        $this->setCookies($data['cookies']);
+        $response = $this->get('/user/me');
 
         $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
     }
@@ -30,10 +32,29 @@ class AdministratorTest extends AbstractWebTestCase
     /**
      * @depends testAdminUserLogin
      */
-    public function testUser(array $cookies): void
+    public function testGetUser(array $data): array
     {
-        $this->setCookies($cookies);
+        $this->setCookies($data['cookies']);
         $response = $this->get('/user/2');
+
+        $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
+
+        return [
+            'cookies' => $data['cookies'],
+            'user' => $this->toArray($response),
+        ];
+    }
+
+    /**
+     * @depends testGetUser
+     */
+    public function testEditUser(array $data): void
+    {
+        $this->setCookies($data['cookies']);
+
+        $user = $data['user'];
+
+        $response = $this->post('/user/2/edit', [], json_encode($user, JSON_THROW_ON_ERROR, 512));
 
         $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
     }

@@ -13,15 +13,17 @@ class UserTest extends AbstractWebTestCase
 
         $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
 
-        return $response->headers->getCookies();
+        return [
+            'cookies' => $response->headers->getCookies(),
+        ];
     }
 
     /**
      * @depends testUserLogin
      */
-    public function testAnonymousUserMe(array $cookies): void
+    public function testAnonymousUserMe(array $data): void
     {
-        $this->setCookies($cookies);
+        $this->setCookies($data['cookies']);
         $response = $this->get('/user/1');
 
         $this->assertEquals(Response::HTTP_FORBIDDEN, $response->getStatusCode());

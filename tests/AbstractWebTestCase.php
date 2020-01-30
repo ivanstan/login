@@ -24,9 +24,9 @@ class AbstractWebTestCase extends WebTestCase
         return self::$client->getResponse();
     }
 
-    protected function post(string $url, array $params = []): Response
+    protected function post(string $url, array $params = [], $content = null): Response
     {
-        self::$client->request('POST', $url, $params);
+        self::$client->request('POST', $url, $params, [], [], $content);
 
         return self::$client->getResponse();
     }
