@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AdministratorTest extends AbstractWebTestCase
 {
-    public function testAdminUserLogin(): array
+    public function testAdminCanLogin(): array
     {
         $response = $this->post('/login', ['email' => 'admin@example.com', 'password' => 'test123']);
 
@@ -19,9 +19,9 @@ class AdministratorTest extends AbstractWebTestCase
     }
 
     /**
-     * @depends testAdminUserLogin
+     * @depends testAdminCanLogin
      */
-    public function testMe(array $data): void
+    public function testAdminCanGetMe(array $data): void
     {
         $this->setCookies($data['cookies']);
         $response = $this->get('/user/me');
@@ -30,25 +30,24 @@ class AdministratorTest extends AbstractWebTestCase
     }
 
     /**
-     * @depends testAdminUserLogin
+     * @depends testAdminCanLogin
      */
-    public function testGetUser(array $data): array
+    public function testAdminCanGetOtherUser(array $data): array
     {
         $this->setCookies($data['cookies']);
         $response = $this->get('/user/2');
 
         $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
 
-        return [
-            'cookies' => $data['cookies'],
-            'user' => $this->toArray($response),
-        ];
+        $data['user'] = $this->toArray($response);
+
+        return $data;
     }
 
     /**
-     * @depends testGetUser
+     * @depends testAdminCanGetOtherUser
      */
-    public function testEditUser(array $data): void
+    public function testAdminCanEditOtherUser(array $data): void
     {
         $this->setCookies($data['cookies']);
 

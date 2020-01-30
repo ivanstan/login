@@ -7,7 +7,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Security;
@@ -21,17 +20,14 @@ class DefaultAuthenticator extends AbstractFormLoginAuthenticator implements Pas
 {
     private SerializerInterface $serializer;
     private EntityManagerInterface $entityManager;
-    private UrlGeneratorInterface $urlGenerator;
     private UserPasswordEncoderInterface $passwordEncoder;
 
     public function __construct(
         EntityManagerInterface $entityManager,
-        UrlGeneratorInterface $urlGenerator,
         UserPasswordEncoderInterface $passwordEncoder,
         SerializerInterface $serializer
     ) {
         $this->entityManager = $entityManager;
-        $this->urlGenerator = $urlGenerator;
         $this->passwordEncoder = $passwordEncoder;
         $this->serializer = $serializer;
     }
@@ -61,11 +57,11 @@ class DefaultAuthenticator extends AbstractFormLoginAuthenticator implements Pas
         $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $credentials['email']]);
 
         if (!$user) {
-            throw new AccessDeniedHttpException('Email could not be found.');
+            throw new AccessDeniedHttpException('Email could not be found');
         }
 
         if (!$user->isActive()) {
-            throw new AccessDeniedHttpException('User is not active.');
+            throw new AccessDeniedHttpException('User is not active');
         }
 
         return $user;
@@ -97,6 +93,6 @@ class DefaultAuthenticator extends AbstractFormLoginAuthenticator implements Pas
 
     protected function getLoginUrl(): string
     {
-        return $this->urlGenerator->generate('app_login');
+        throw new AccessDeniedHttpException('Access denied');
     }
 }
