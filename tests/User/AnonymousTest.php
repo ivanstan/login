@@ -35,17 +35,17 @@ class AnonymousTest extends AbstractWebTestCase
         $this->assertEquals(Response::HTTP_FORBIDDEN, $response->getStatusCode());
     }
 
-//    public function testAnonymousUserGet(): void
-//    {
-//        $response = $this->get('/user/1');
-//
-//        $this->assertEquals(Response::HTTP_FORBIDDEN, $response->getStatusCode());
-//    }
-//
-//    public function testAnonymousUserEdit(): void
-//    {
-//        $response = $this->post('/user/1/edit');
-//
-//        $this->assertEquals(Response::HTTP_FORBIDDEN, $response->getStatusCode());
-//    }
+    public function testAnonymousUserGet(): void
+    {
+        $response = $this->get('/user/1');
+
+        $this->assertEquals(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+    }
+
+    public function testAnonymousUserEdit(): void
+    {
+        $response = $this->post('/user/1/edit');
+
+        $this->assertEquals(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+    }
 }
