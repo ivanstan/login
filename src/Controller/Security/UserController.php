@@ -20,13 +20,10 @@ class UserController extends AbstractController
 {
     /**
      * @Route(name="user_me", path="/me")
+     * @IsGranted("ROLE_USER")
      */
     public function me(SerializerInterface $serializer): JsonResponse
     {
-        if ($this->getUser() === null) {
-            throw new AccessDeniedHttpException();
-        }
-
         return JsonResponse::fromJsonString(
             $serializer->serialize($this->getUser(), 'json', ['groups' => 'user'])
         );
@@ -45,7 +42,7 @@ class UserController extends AbstractController
 
     /**
      * @Route("/{user<\d+>}/edit", name="user_edit")
-     * @IsGranted("ROLE_ADMIN")
+     * @IsGranted("USER_EDIT", subject="user")
      */
     public function edit(Request $request, User $user, SerializerInterface $serializer, EntityManagerInterface $entityManager): JsonResponse
     {

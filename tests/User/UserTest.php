@@ -60,7 +60,7 @@ class UserTest extends AbstractWebTestCase
 
         $user = $data['user'];
 
-        $response = $this->post("/user/${$user['id']}/edit", [], json_encode($user, JSON_THROW_ON_ERROR, 512));
+        $response = $this->post("/user/{$user['id']}/edit", [], json_encode($user, JSON_THROW_ON_ERROR, 512));
 
         $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
     }
