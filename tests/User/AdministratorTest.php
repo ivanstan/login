@@ -61,7 +61,7 @@ class AdministratorTest extends AbstractWebTestCase
     /**
      * @depends testAdminCanLogin
      */
-    public function testAnonymousCanCreateUser(array $data): void
+    public function testAdminCanCreateUser(array $data): array
     {
         $this->setCookies($data['cookies']);
 
@@ -72,5 +72,23 @@ class AdministratorTest extends AbstractWebTestCase
         $response = $this->post('/user/new', [], json_encode($user, JSON_THROW_ON_ERROR, 512));
 
         $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
+
+        $data['user'] = json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
+
+        return $data;
     }
+
+    /**
+     * @depends testAdminCanCreateUser
+     */
+    public function testAdminCanDeleteUser(array $data): void
+    {
+        $userId = $data['user']['id'];
+
+        $this->setCookies($data['cookies']);
+        $response = $this->delete("/user/$userId/delete");
+
+        $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
+    }
+
 }

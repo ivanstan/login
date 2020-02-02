@@ -75,4 +75,18 @@ class UserController extends AbstractController
             $serializer->serialize($user, 'json', ['groups' => 'user'])
         );
     }
+
+    /**
+     * @Route("/{user<\d+>}/delete", name="user_delete")
+     * @IsGranted("ROLE_ADMIN")
+     */
+    public function delete(User $user, EntityManagerInterface $entityManager, SerializerInterface $serializer): JsonResponse
+    {
+        $entityManager->remove($user);
+        $entityManager->flush();
+
+        return JsonResponse::fromJsonString(
+            $serializer->serialize($user, 'json', ['groups' => 'user'])
+        );
+    }
 }
