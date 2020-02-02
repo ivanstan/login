@@ -48,4 +48,11 @@ class AnonymousTest extends AbstractWebTestCase
 
         $this->assertEquals(Response::HTTP_FORBIDDEN, $response->getStatusCode());
     }
+
+    public function testAnonymousCantCreateUser(): void
+    {
+        $response = $this->post('/user/new');
+
+        $this->assertEquals(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+    }
 }

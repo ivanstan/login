@@ -64,4 +64,15 @@ class UserTest extends AbstractWebTestCase
 
         $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
     }
+
+    /**
+     * @depends testUserLogin
+     */
+    public function testAnonymousCantCreateUser(array $data): void
+    {
+        $this->setCookies($data['cookies']);
+        $response = $this->post('/user/new');
+
+        $this->assertEquals(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+    }
 }

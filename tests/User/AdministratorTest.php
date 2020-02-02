@@ -57,4 +57,15 @@ class AdministratorTest extends AbstractWebTestCase
 
         $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
     }
+
+    public function testAnonymousCanCreateUser(array $data): void
+    {
+        $user = [
+            'email' => 'user10@example.com'
+        ];
+
+        $response = $this->post('/user/new', [], json_encode($user, JSON_THROW_ON_ERROR, 512));
+
+        $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
+    }
 }
