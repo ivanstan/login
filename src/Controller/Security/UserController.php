@@ -18,7 +18,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 class UserController extends AbstractController
 {
     /**
-     * @Route(name="user_me", path="/me")
+     * @Route(path="/me", name="user_me")
      * @IsGranted("ROLE_USER")
      */
     public function me(SerializerInterface $serializer): JsonResponse
@@ -29,10 +29,28 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/{user<\d+>}", name="user")
+     * @Route("/new", name="user_create")
      * @IsGranted("ROLE_ADMIN")
      */
-    public function user(User $user, SerializerInterface $serializer): JsonResponse
+    public function create(Request $request, SerializerInterface $serializer, EntityManagerInterface $entityManager): JsonResponse
+    {
+        $user = new User();
+
+        $serializer->deserialize($request->getContent(), User::class, 'json', [AbstractNormalizer::OBJECT_TO_POPULATE => $user]);
+
+        $entityManager->persist($user);
+        $entityManager->flush();
+
+        return JsonResponse::fromJsonString(
+            $serializer->serialize($user, 'json', ['groups' => 'user'])
+        );
+    }
+
+    /**
+     * @Route("/{user<\d+>}", name="user_read")
+     * @IsGranted("ROLE_ADMIN")
+     */
+    public function read(User $user, SerializerInterface $serializer): JsonResponse
     {
         return JsonResponse::fromJsonString(
             $serializer->serialize($user, 'json', ['groups' => 'user'])
@@ -40,11 +58,15 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/{user<\d+>}/edit", name="user_edit")
+     * @Route("/{user<\d+>}/edit", name="user_update")
      * @IsGranted("USER_EDIT", subject="user")
      */
-    public function edit(Request $request, User $user, SerializerInterface $serializer, EntityManagerInterface $entityManager): JsonResponse
-    {
+    public function update(
+        Request $request,
+        User $user,
+        SerializerInterface $serializer,
+        EntityManagerInterface $entityManager
+    ): JsonResponse {
         $serializer->deserialize($request->getContent(), User::class, 'json', [AbstractNormalizer::OBJECT_TO_POPULATE => $user]);
 
         $entityManager->flush();

@@ -21,7 +21,7 @@ class User implements UserInterface
      * @ORM\Column(type="integer")
      * @Groups({"user"})
      */
-    private int $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
@@ -33,7 +33,7 @@ class User implements UserInterface
     private string $email;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      */
     private ?string $password;
 

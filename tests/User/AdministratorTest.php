@@ -58,8 +58,13 @@ class AdministratorTest extends AbstractWebTestCase
         $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
     }
 
+    /**
+     * @depends testAdminCanLogin
+     */
     public function testAnonymousCanCreateUser(array $data): void
     {
+        $this->setCookies($data['cookies']);
+
         $user = [
             'email' => 'user10@example.com'
         ];
