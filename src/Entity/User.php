@@ -16,7 +16,10 @@ use ApiPlatform\Core\Annotation\ApiResource;
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @UniqueEntity(fields={"email"}, message="User already exists")
  * @ORM\HasLifecycleCallbacks()
- * @ApiResource
+ * @ApiResource(
+ *  normalizationContext={"groups"={"read"}},
+ *  denormalizationContext={"groups"={"write"}},
+ * )
  */
 class User implements UserInterface
 {
@@ -26,7 +29,7 @@ class User implements UserInterface
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"user"})
+     * @Groups({"read", "write"})
      */
     private ?int $id;
 
@@ -35,7 +38,7 @@ class User implements UserInterface
      * @Assert\Email();
      * @Assert\NotBlank();
      * @Assert\NotNull();
-     * @Groups({"user"})
+     * @Groups({"read", "write"})
      */
     private string $email;
 
@@ -44,18 +47,21 @@ class User implements UserInterface
      */
     private ?string $password;
 
+    /**
+     * @Groups({"write"})
+     */
     private $plainPassword;
 
     /**
      * @ORM\Column(type="json")
      * @Assert\NotNull();
-     * @Groups({"user"})
+     * @Groups({"read", "write"})
      */
     private array $roles = [];
 
     /**
      * @ORM\Column(type="boolean", options={"default" : 0})
-     * @Groups({"user"})
+     * @Groups({"read", "write"})
      */
     private bool $active = false;
 
