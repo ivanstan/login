@@ -62,4 +62,11 @@ class AnonymousTest extends AbstractWebTestCase
 
         $this->assertEquals(Response::HTTP_FORBIDDEN, $response->getStatusCode());
     }
+
+    public function testAnonymousCantAccessUserCollection(): void
+    {
+        $response = $this->delete('/users');
+
+        $this->assertEquals(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+    }
 }

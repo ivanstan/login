@@ -86,4 +86,15 @@ class UserTest extends AbstractWebTestCase
 
         $this->assertEquals(Response::HTTP_FORBIDDEN, $response->getStatusCode());
     }
+
+    /**
+     * @depends testUserLogin
+     */
+    public function testUserCantAccessUserCollection(array $data): void
+    {
+        $this->setCookies($data['cookies']);
+        $response = $this->delete('/users');
+
+        $this->assertEquals(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+    }
 }

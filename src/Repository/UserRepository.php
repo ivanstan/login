@@ -3,6 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\User;
+use App\Model\Collection\Parameters;
+use App\Model\Collection\EntityCollection;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
@@ -36,32 +38,35 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->_em->flush();
     }
 
-    // /**
-    //  * @return User[] Returns an array of User objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('u.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+    public function collection(Parameters $params): EntityCollection {
+        $builder = $this->createQueryBuilder('u');
 
-    /*
-    public function findOneBySomeField($value): ?User
-    {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        // search
+        if ($params->hasSearch()) {
+            $builder
+                ->where(
+                    $builder->expr()->orX(
+                        $builder->expr()->like('u.email', ':search')
+                    )
+                )
+                ->setParameter('search', '%' . $params->getSearch() . '%');
+        }
+
+        // get total
+        $total = \count($builder->getQuery()->getResult());
+
+        // sort
+//        $builder->orderBy('u.' . $sort, $sortDir);
+
+        // limit
+        $builder->setMaxResults($params->getPageSize());
+        $builder->setFirstResult($params->getOffset());
+
+        $collection = new EntityCollection();
+
+        $collection->setCollection($builder->getQuery()->getResult());
+        $collection->setTotal($total);
+
+        return $collection;
     }
-    */
 }
