@@ -24,7 +24,7 @@ class AdministratorTest extends AbstractWebTestCase
     public function testAdminCanGetMe(array $data): void
     {
         $this->setCookies($data['cookies']);
-        $response = $this->get('/user/me');
+        $response = $this->get('/users/me');
 
         $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
     }
@@ -35,7 +35,7 @@ class AdministratorTest extends AbstractWebTestCase
     public function testAdminCanGetOtherUser(array $data): array
     {
         $this->setCookies($data['cookies']);
-        $response = $this->get('/user/2');
+        $response = $this->get('/api/users/2');
 
         $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
 
@@ -53,7 +53,7 @@ class AdministratorTest extends AbstractWebTestCase
 
         $user = $data['user'];
 
-        $response = $this->post('/user/2/edit', [], json_encode($user, JSON_THROW_ON_ERROR, 512));
+        $response = $this->post('/api/users/2/edit', [], json_encode($user, JSON_THROW_ON_ERROR, 512));
 
         $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
     }
@@ -69,7 +69,7 @@ class AdministratorTest extends AbstractWebTestCase
             'email' => 'user10@example.com'
         ];
 
-        $response = $this->post('/user/new', [], json_encode($user, JSON_THROW_ON_ERROR, 512));
+        $response = $this->post('/api/users', [], json_encode($user, JSON_THROW_ON_ERROR, 512));
 
         $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
 

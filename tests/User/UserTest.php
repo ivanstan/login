@@ -24,7 +24,7 @@ class UserTest extends AbstractWebTestCase
     public function testUserCantGetOtherUser(array $data): void
     {
         $this->setCookies($data['cookies']);
-        $response = $this->get('/user/1');
+        $response = $this->get('/api/users/1');
 
         $this->assertEquals(Response::HTTP_FORBIDDEN, $response->getStatusCode());
     }
@@ -35,7 +35,7 @@ class UserTest extends AbstractWebTestCase
     public function testUserCanGetMe(array $data): array
     {
         $this->setCookies($data['cookies']);
-        $response = $this->get('/user/me');
+        $response = $this->get('/users/me');
 
         $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
 
@@ -46,7 +46,7 @@ class UserTest extends AbstractWebTestCase
 
     public function testUserCantEditOtherUser(): void
     {
-        $response = $this->post('/user/1/edit');
+        $response = $this->patch('/api/users/1');
 
         $this->assertEquals(Response::HTTP_FORBIDDEN, $response->getStatusCode());
     }
@@ -60,7 +60,7 @@ class UserTest extends AbstractWebTestCase
 
         $user = $data['user'];
 
-        $response = $this->post("/user/{$user['id']}/edit", [], json_encode($user, JSON_THROW_ON_ERROR, 512));
+        $response = $this->patch("/api/users/{$user['id']}", [], json_encode($user, JSON_THROW_ON_ERROR, 512));
 
         $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
     }
@@ -71,7 +71,7 @@ class UserTest extends AbstractWebTestCase
     public function testUserCantCreateUser(array $data): void
     {
         $this->setCookies($data['cookies']);
-        $response = $this->post('/user/new');
+        $response = $this->post('/api/users');
 
         $this->assertEquals(Response::HTTP_FORBIDDEN, $response->getStatusCode());
     }
@@ -82,7 +82,7 @@ class UserTest extends AbstractWebTestCase
     public function testUserCantDeleteUser(array $data): void
     {
         $this->setCookies($data['cookies']);
-        $response = $this->delete('/user/1/delete');
+        $response = $this->delete('/api/users/1');
 
         $this->assertEquals(Response::HTTP_FORBIDDEN, $response->getStatusCode());
     }
@@ -93,7 +93,7 @@ class UserTest extends AbstractWebTestCase
     public function testUserCantAccessUserCollection(array $data): void
     {
         $this->setCookies($data['cookies']);
-        $response = $this->delete('/users');
+        $response = $this->get('/api/users');
 
         $this->assertEquals(Response::HTTP_FORBIDDEN, $response->getStatusCode());
     }

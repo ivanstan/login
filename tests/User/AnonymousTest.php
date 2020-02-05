@@ -30,42 +30,42 @@ class AnonymousTest extends AbstractWebTestCase
 
     public function testAnonymousUserCantGetMe(): void
     {
-        $response = $this->get('/user/me');
+        $response = $this->get('/users/me');
 
         $this->assertEquals(Response::HTTP_FORBIDDEN, $response->getStatusCode());
     }
 
     public function testAnonymousUserCantGetOtherUser(): void
     {
-        $response = $this->get('/user/1');
+        $response = $this->get('/api/users/1');
 
         $this->assertEquals(Response::HTTP_FORBIDDEN, $response->getStatusCode());
     }
 
     public function testAnonymousUserCantEditOtherUser(): void
     {
-        $response = $this->post('/user/1/edit');
+        $response = $this->patch('/api/users/1');
 
         $this->assertEquals(Response::HTTP_FORBIDDEN, $response->getStatusCode());
     }
 
     public function testAnonymousCantCreateUser(): void
     {
-        $response = $this->post('/user/new');
+        $response = $this->post('/api/users');
 
         $this->assertEquals(Response::HTTP_FORBIDDEN, $response->getStatusCode());
     }
 
     public function testAnonymousCantDeleteUser(): void
     {
-        $response = $this->delete('/user/1/delete');
+        $response = $this->delete('/api/users/1');
 
         $this->assertEquals(Response::HTTP_FORBIDDEN, $response->getStatusCode());
     }
 
     public function testAnonymousCantAccessUserCollection(): void
     {
-        $response = $this->delete('/users');
+        $response = $this->get('/api/users');
 
         $this->assertEquals(Response::HTTP_FORBIDDEN, $response->getStatusCode());
     }

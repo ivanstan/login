@@ -21,15 +21,23 @@ use ApiPlatform\Core\Annotation\ApiResource;
  *  denormalizationContext={"groups"={"user_write"}},
  *  collectionOperations={
  *      "get"={"security"="is_granted('ROLE_ADMIN')"},
- *      "post"={"security"="is_granted('ROLE_ADMIN')"}
+ *      "post"={"security"="is_granted('ROLE_ADMIN')"},
  *  },
  *  itemOperations={
  *      "get"={"security"="is_granted('ROLE_ADMIN')"},
  *      "delete"={"security"="is_granted('ROLE_ADMIN')"},
- *      "patch"={"security"="is_granted('USER_EDIT', user)"}
+ *      "patch"={"security"="is_granted('USER_EDIT', user)"},
+ *      "me"={
+ *          "security"="is_granted('ROLE_USER')",
+ *          "route_name"="user_me"
+ *      }
  *  }
  * )
  */
+
+
+
+
 class User implements UserInterface
 {
     use TimestampableTrait;

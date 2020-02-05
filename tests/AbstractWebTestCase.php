@@ -31,6 +31,13 @@ class AbstractWebTestCase extends WebTestCase
         return self::$client->getResponse();
     }
 
+    protected function patch(string $url, array $params = [], $content = null): Response
+    {
+        self::$client->request('PATCH', $url, $params, [], [], $content);
+
+        return self::$client->getResponse();
+    }
+
     protected function delete(string $url, array $params = [], $content = null): Response
     {
         self::$client->request('DELETE', $url, $params, [], [], $content);
