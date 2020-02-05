@@ -34,10 +34,6 @@ use ApiPlatform\Core\Annotation\ApiResource;
  *  }
  * )
  */
-
-
-
-
 class User implements UserInterface
 {
     use TimestampableTrait;

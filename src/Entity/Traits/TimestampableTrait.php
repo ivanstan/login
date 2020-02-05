@@ -3,6 +3,7 @@
 namespace App\Entity\Traits;
 
 use App\Service\DateTimeService;
+use Doctrine\ORM\Mapping as ORM;
 
 trait TimestampableTrait
 {
