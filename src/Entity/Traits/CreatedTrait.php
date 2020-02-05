@@ -9,7 +9,7 @@ trait CreatedTrait
     /**
      * @var \DateTime
      * @ORM\Column(type="datetime")
-     * @Groups({"user"})
+     * @Groups({"user_read"})
      */
     private \DateTime $created;
 

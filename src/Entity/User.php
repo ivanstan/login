@@ -17,8 +17,17 @@ use ApiPlatform\Core\Annotation\ApiResource;
  * @UniqueEntity(fields={"email"}, message="User already exists")
  * @ORM\HasLifecycleCallbacks()
  * @ApiResource(
- *  normalizationContext={"groups"={"read"}},
- *  denormalizationContext={"groups"={"write"}},
+ *  normalizationContext={"groups"={"user_read"}},
+ *  denormalizationContext={"groups"={"user_write"}},
+ *  collectionOperations={
+ *      "get"={"security"="is_granted('ROLE_ADMIN')"},
+ *      "post"={"security"="is_granted('ROLE_ADMIN')"}
+ *  },
+ *  itemOperations={
+ *      "get"={"security"="is_granted('ROLE_ADMIN')"},
+ *      "delete"={"security"="is_granted('ROLE_ADMIN')"},
+ *      "patch"={"security"="is_granted('USER_EDIT', user)"}
+ *  }
  * )
  */
 class User implements UserInterface
@@ -29,7 +38,7 @@ class User implements UserInterface
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"read", "write"})
+     * @Groups({"user_read", "user_write"})
      */
     private ?int $id;
 
@@ -38,7 +47,7 @@ class User implements UserInterface
      * @Assert\Email();
      * @Assert\NotBlank();
      * @Assert\NotNull();
-     * @Groups({"read", "write"})
+     * @Groups({"user_read", "user_write"})
      */
     private string $email;
 
@@ -48,20 +57,20 @@ class User implements UserInterface
     private ?string $password;
 
     /**
-     * @Groups({"write"})
+     * @Groups({"user_write"})
      */
     private $plainPassword;
 
     /**
      * @ORM\Column(type="json")
      * @Assert\NotNull();
-     * @Groups({"read", "write"})
+     * @Groups({"user_read", "user_write"})
      */
     private array $roles = [];
 
     /**
      * @ORM\Column(type="boolean", options={"default" : 0})
-     * @Groups({"read", "write"})
+     * @Groups({"user_read", "user_write"})
      */
     private bool $active = false;
 

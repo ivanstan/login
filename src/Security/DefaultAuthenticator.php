@@ -87,7 +87,7 @@ class DefaultAuthenticator extends AbstractFormLoginAuthenticator implements Pas
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
         return JsonResponse::fromJsonString(
-            $this->serializer->serialize($token->getUser(), 'json', ['groups' => 'user'])
+            $this->serializer->serialize($token->getUser(), 'json', ['groups' => 'user_read'])
         );
     }
 

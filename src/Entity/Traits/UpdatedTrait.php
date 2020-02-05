@@ -9,7 +9,7 @@ trait UpdatedTrait
     /**
      * @var \DateTime
      * @ORM\Column(type="datetime")
-     * @Groups({"user"})
+     * @Groups({"user_read"})
      */
     private \DateTime $updated;
 
